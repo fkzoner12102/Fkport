@@ -77,5 +77,5 @@ optimizer = optim.SGD(model.parameters(
 
 
 aiやC#エンジニアいいんじゃないか
-結構大変かもしれないけど
+最初は結構大変かもしれないけど
 
