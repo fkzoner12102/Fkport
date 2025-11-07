@@ -26,3 +26,51 @@ https://www.google.com/search?q=unity+%E6%9C%AC&client=firefox-b-m&sca_esv=f4f4d
 
 atcoder 過去問　atcoder problemsの解答読んで、プログラミングを読む練習する
 
+pytorch 基本的なコード
+
+
+pytorch 基本的なコード
+ChatGPT:
+PyTorch（パイトーチ）は、Pythonでディープラーニングを実装するための人気の高いフレームワークです。
+ここでは、基本的なPyTorchコードを順を追って紹介します。
+________________________________________
+🧩 1. 基本インポート
+import torch
+import torch.nn as nn
+import torch.optim as optim
+________________________________________
+🔢 2. テンソル（Tensor）の作成
+# 普通のテンソル
+x = torch.tensor([[1, 2], [3, 4]], dtype=torch.float32)
+
+# ゼロやランダム値で初期化
+zeros = torch.zeros((2, 3))
+rand = torch.randn((2, 3))
+
+print(x)
+print(rand)
+________________________________________
+⚙️ 3. 自動微分 (Autograd)
+x = torch.tensor(2.0, requires_grad=True)
+y = x ** 2 + 3 * x + 1
+y.backward()  # dy/dxを計算
+print(x.grad)  # 勾配（= 2x + 3）
+________________________________________
+🧠 4. ニューラルネットワークの定義
+class SimpleNN(nn.Module):
+    def __init__(self):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(2, 3)  # 入力2 → 隠れ3
+        self.fc2 = nn.Linear(3, 1)  # 隠れ3 → 出力1
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
+model = SimpleNN()
+print(model)
+________________________________________
+🔁 5. 損失関数と最適化
+criterion = nn.MSELoss()
+optimizer = optim.SGD(model.parameters(
