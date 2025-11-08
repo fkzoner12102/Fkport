@@ -84,3 +84,10 @@ optimizer = optim.SGD(model.parameters(
 aiやC#エンジニアいいんじゃないか
 最初は結構大変かもしれないけど
 
+
+rdkit
+https://rdkit.org/docs_jp/Getting_Started_with_RDKit_in_Python_jp.html
+フィンガープリント
+tanimoto係数
+https://zenn.dev/poclabweb/books/chemoinfomatics_beginner/viewer/lesson04_00_rdkit
+サタヴぁ　細胞生物学
