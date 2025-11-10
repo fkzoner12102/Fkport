@@ -119,4 +119,186 @@ vtuber活動よりも就職　仕事
 
 
 鬼滅の刃　どうま
-ハンターハンター　継承戦
+
+
+rdkit コード例
+あなた:
+他には
+
+
+rdkit コード例
+ChatGPT:
+もちろんです。
+以下に、RDKit（化学情報処理ライブラリ）の代表的なコード例をいくつか紹介します。
+Pythonで動作します（pip install rdkit または conda install -c conda-forge rdkit）。
+________________________________________
+🧪 基本例1：SMILESから分子を生成し、情報を取得
+from rdkit import Chem
+
+# SMILES文字列から分子を作成
+mol = Chem.MolFromSmiles("CCO")  # エタノール
+
+# 分子式や原子数などを表示
+print("分子式:", Chem.rdMolDescriptors.CalcMolFormula(mol))
+print("原子数:", mol.GetNumAtoms())
+print("結合数:", mol.GetNumBonds())
+
+# Atomsをループで見る
+for atom in mol.GetAtoms():
+    print(f"原子: {atom.GetSymbol()}, 原子番号: {atom.GetAtomicNum()}")
+________________________________________
+🧬 基本例2：分子の描画
+from rdkit import Chem
+from rdkit.Chem import Draw
+
+mol = Chem.MolFromSmiles("CCO")
+img = Draw.MolToImage(mol, size=(300, 300))
+img.show()
+________________________________________
+⚗️ 基本例3：分子の物性計算
+from rdkit import Chem
+from rdkit.Chem import Descriptors
+
+mol = Chem.MolFromSmiles("CCO")
+
+print("分子量:", Descriptors.MolWt(mol))
+print("LogP:", Descriptors.MolLogP(mol))
+print("水素結合供与体数:", Descriptors.NumHDonors(mol))
+print("水素結合受容体数:", Descriptors.NumHAcceptors(mol))
+________________________________________
+🧩 基本例4：部分構造マッチング（Substructure Search）
+from rdkit import Chem
+
+mol = Chem.MolFromSmiles("CCOC(=O)C")  # エチルアセテート
+pattern = Chem.MolFromSmarts("C(=O)O")  # カルボン酸エステル部分
+
+if mol.HasSubstructMatch(pattern):
+    print("部分構造が見つかりました！")
+else:
+    print("部分構造は存在しません。")
+________________________________________
+💥 基本例5：分子の3D構造生成
+from rdkit import Chem
+from rdkit.Chem import AllChem
+
+mol = Chem.AddHs(Chem.MolFromSmiles("CCO"))
+AllChem.EmbedMolecule(mol, randomSeed=42)
+AllChem.UFFOptimizeMolecule(mol)
+
+# 3D座標を出力
+for atom in mol.GetAtoms():
+    pos = mol.GetConformer().GetAtomPosition(atom.GetIdx())
+    print(f"{atom.GetSymbol()}: {pos.x:.3f}, {pos.y:.3f}, {pos.z:.3f}")
+________________________________________
+🧾 Bonus：複数分子の描画（グリッド形式）
+from rdkit import Chem
+from rdkit.Chem import Draw
+
+smiles_list = ["CCO", "CC(=O)O", "CCN", "C1=CC=CC=C1"]
+mols = [Chem.MolFromSmiles(s) for s in smiles_list]
+
+img = Draw.MolsToGridImage(mols, molsPerRow=2, subImgSize=(200, 200))
+img.show()
+________________________________________
+もし目的が決まっていれば（例：「分子類似度を計算したい」「3D構造を最適化したい」「分子をPNGで保存したい」など）、
+その用途に特化したRDKitコードも書けます。
+どんな用途で使いたいですか？
+あなた:
+他には
+ChatGPT:
+いいですね 😊
+RDKit はかなり多機能なので、基本以外にもたくさん便利な使い方があります。
+以下では、「もう一歩進んだ」コード例をカテゴリ別に紹介します。
+________________________________________
+🔍 1. 分子類似度（Fingerprint と Tanimoto）
+from rdkit import Chem, DataStructs
+from rdkit.Chem import AllChem
+
+mol1 = Chem.MolFromSmiles("CCO")   # エタノール
+mol2 = Chem.MolFromSmiles("CCCO")  # プロパノール
+
+# Morgan Fingerprint (半径=2)
+fp1 = AllChem.GetMorganFingerprintAsBitVect(mol1, 2)
+fp2 = AllChem.GetMorganFingerprintAsBitVect(mol2, 2)
+
+# 類似度計算（タニモト係数）
+similarity = DataStructs.TanimotoSimilarity(fp1, fp2)
+print(f"Tanimoto 類似度: {similarity:.3f}")
+________________________________________
+📊 2. 分子群の性質をまとめて計算（pandas 連携）
+import pandas as pd
+from rdkit import Chem
+from rdkit.Chem import Descriptors
+
+smiles_list = ["CCO", "CCCO", "CC(=O)O", "c1ccccc1"]
+data = []
+
+for smi in smiles_list:
+    mol = Chem.MolFromSmiles(smi)
+    data.append({
+        "SMILES": smi,
+        "MolWt": Descriptors.MolWt(mol),
+        "LogP": Descriptors.MolLogP(mol),
+        "NumHDonors": Descriptors.NumHDonors(mol),
+        "NumHAcceptors": Descriptors.NumHAcceptors(mol)
+    })
+
+df = pd.DataFrame(data)
+print(df)
+________________________________________
+🧬 3. SMILES → InChI / InChIKey 変換
+from rdkit import Chem
+from rdkit.Chem import inchi
+
+mol = Chem.MolFromSmiles("CCO")
+
+inchi_str = inchi.MolToInchi(mol)
+inchi_key = inchi.InchiToInchiKey(inchi_str)
+
+print("InChI:", inchi_str)
+print("InChIKey:", inchi_key)
+________________________________________
+🧩 4. 部分構造のハイライト付き描画
+from rdkit import Chem
+from rdkit.Chem import Draw
+
+mol = Chem.MolFromSmiles("CCOC(=O)C")
+pattern = Chem.MolFromSmarts("C(=O)O")
+
+matches = mol.GetSubstructMatches(pattern)
+img = Draw.MolToImage(mol, highlightAtoms=[i for match in matches for i in match])
+img.show()
+________________________________________
+🧱 5. MolファイルやSDFファイルの入出力
+from rdkit import Chem
+
+# Molファイルを読み込み
+mol = Chem.MolFromMolFile("example.mol")
+
+# SMILESに変換
+print(Chem.MolToSmiles(mol))
+
+# 新しい Mol ファイルに保存
+Chem.MolToMolFile(mol, "output.mol")
+________________________________________
+💫 6. 構造最適化とエネルギー評価
+from rdkit import Chem
+from rdkit.Chem import AllChem
+
+mol = Chem.AddHs(Chem.MolFromSmiles("CCO"))
+AllChem.EmbedMolecule(mol)
+energy = AllChem.UFFOptimizeMolecule(mol)
+
+print("エネルギー最小化ステータス:", energy)
+________________________________________
+⚗️ 7. 分子の電荷・芳香族性・価数チェック
+from rdkit import Chem
+
+mol = Chem.MolFromSmiles("CC(=O)[O-]")
+
+for atom in mol.GetAtoms():
+    print(f"{atom.GetSymbol()} - 形式電荷: {atom.GetFormalCharge()}, 芳香族?: {atom.GetIsAromatic()}, 価数: {atom.GetTotalValence()}")
+________________________________________
+🧠 8. Canonical SMILES（正規化）生成
+
+
